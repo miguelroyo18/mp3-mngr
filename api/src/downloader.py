@@ -1,12 +1,15 @@
+import os
 import yt_dlp
+
 
 class Downloader:
     def __init__(self):
         self.yt_dlp_opts = {
-            'format': 'bestvideo+bestaudio/best',
+            'format': 'bestaudio/best',
             'keepvideo': False,
-            'outtmpl': '%(title)s.mp3',
-            'progress_hooks': [self.__progress_hook],
+            'extract_audio': True,
+            'outtmpl': '{}/downloads/%(title)s.mp3'.format(os.path.expanduser('~')),
+            'progress_hooks': [self.__progress_hook], # It may not be used at the end
         }
         self.info = None
 
@@ -29,6 +32,9 @@ class Downloader:
         }
         self.info = info
 
+    def update_path(self, path):
+        self.yt_dlp_opts['outtmpl'] = '{}/%(title)s.mp3'.format(path)
+
     def download(self, link):
         with yt_dlp.YoutubeDL(self.yt_dlp_opts) as ydl:
             ydl.download([link])
@@ -36,3 +42,10 @@ class Downloader:
     def fetch_status(self):
         return self.info
 
+
+def main():
+    pass
+
+
+if __name__ == "__main__":
+    main()
