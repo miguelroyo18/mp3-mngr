@@ -35,9 +35,9 @@ class Downloader:
     def update_path(self, path):
         self.yt_dlp_opts['outtmpl'] = '{}/%(title)s.mp3'.format(path)
 
-    def download(self, link):
+    def download(self, id):
         with yt_dlp.YoutubeDL(self.yt_dlp_opts) as ydl:
-            ydl.download([link])
+            ydl.download(["https://youtu.be/{}".format(id)])
 
     def fetch_status(self):
         return self.info
