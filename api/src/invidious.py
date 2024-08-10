@@ -17,7 +17,7 @@ class Invidious:
 
 
 def main():
-    query = "the entertainment's here"
+    query = "the show goes on"
     test = Invidious()
     print(test.search_track(query))
 
