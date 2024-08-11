@@ -1,26 +1,44 @@
 import * as React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+
+import { ThemeProvider } from '@mui/material/styles';
 
 import NavigationBar from './components/NavigationBar.tsx';
+import greenTheme from './theme.js';
+
+
+function SearchPage() {
+  return(
+    <Typography level="h2" component="h1">
+      Search
+    </Typography>
+  );
+}
+
+function MyMusicPage() {
+  return(
+    <Typography level="h2" component="h1">
+      My music
+    </Typography>
+  );
+}
 
 
 export default function App() {
-  const [mode, setMode] = React.useState<PaletteMode>('light');
-
-  const toggleColorMode = () => {
-    setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  };
-
   return (
-    <CssBaseline>
-      <NavigationBar mode={mode} toggleColorMode={toggleColorMode} />
-      <Container
-        maxWidth="lg"
-        component="main"
-        sx={{ display: 'flex', flexDirection: 'column', my: 16, gap: 4 }}
-      >
-      </Container>
-    </CssBaseline>
+    <ThemeProvider theme={greenTheme}>
+      <CssBaseline>
+        <Router>
+          <NavigationBar />
+          <Routes>
+            <Route index element={<SearchPage />} />
+            <Route path="/my-music" element={<MyMusicPage />} />
+          </Routes>
+        </Router>
+      </CssBaseline>
+    </ThemeProvider>
   );
 }
