@@ -1,6 +1,5 @@
 import { createTheme } from '@mui/material/styles';
 
-
 const greenTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -10,9 +9,28 @@ const greenTheme = createTheme({
     },
     text: {
       primary: '#FFFFFF',
-      secondary: '#B0B0B0'
-    }
+      secondary: '#B0B0B0',
+    },
+
+    success: {
+      main: '#40A578',
+      light: '#9DDE8B',
+      dark: '#006769',
+      contrastText: '#FFFFFF',
+    },
   },
+
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: ({ ownerState }) => ({
+          textTransform: 'none',
+          color: ownerState.selected ? '#F5F5F5' : '#878787',
+        }),
+      },
+    },
+  },
+
 });
 
 export default greenTheme;

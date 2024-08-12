@@ -22,9 +22,19 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export default function NavigationBar() {
   const [open, setOpen] = useState(false);
+  const [selectedPage, setSelectedPage] = useState('');
+
+  const pages = [
+    { path: '', label: 'Search' },
+    { path: 'my-music', label: 'My Music' },
+  ];
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
+  };
+
+  const handleButtonClick = (page) => {
+    setSelectedPage(page);
   };
 
   return (
@@ -46,25 +56,31 @@ export default function NavigationBar() {
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
         <StyledToolbar variant="dense" disableGutters>
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
-            <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 4 }}>
-              <Button
-                component={Link}
-                to=""
-                variant="text"
-                size="small"
-                sx={{ textTransform: 'none' }}
-              >
-                Search
-              </Button>
-              <Button
-                component={Link}
-                to="/my-music"
-                variant="text"
-                size="small"
-                sx={{ textTransform: 'none' }}
-              >
-                My Music
-              </Button>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 5 }}>
+              {pages.map((page) => (
+                <Button
+                  key={page.path}
+                  component={Link}
+                  to={page.path}
+                  selected={selectedPage === page.path}
+                  onClick={() => handleButtonClick(page.path)}
+                  size="small"
+                  color={selectedPage === page.path ? 'success' : 'primary'}
+                  variant={selectedPage === page.path ? 'outlined' : 'text'}
+                  sx={{
+                    borderRadius: '80px',
+                    padding: 1,
+                    fontSize: '0.9rem',
+                    fontWeight : selectedPage === page.path ? 'bold' : 'normal',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textTransform: 'none',
+                  }}
+                >
+                  {page.label}
+                </Button>
+              ))}
             </Box>
           </Box>
           <Box sx={{ display: { sm: 'flex', md: 'none' } }}>
