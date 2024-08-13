@@ -26,6 +26,14 @@ function MyMusicPage() {
   );
 }
 
+function DiscoverPage() {
+  return(
+    <Typography level="h2" component="h1">
+      Discover
+    </Typography>
+  );
+}
+
 
 export default function App() {
   return (
@@ -36,6 +44,7 @@ export default function App() {
           <Routes>
             <Route index element={<SearchPage />} />
             <Route path="/my-music" element={<MyMusicPage />} />
+            <Route path="/discover" element={<DiscoverPage />} />
           </Routes>
         </Router>
       </CssBaseline>
