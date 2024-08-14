@@ -94,19 +94,32 @@ export default function NavigationBar() {
                   selected={selectedPage === page.path}
                   onClick={() => handleButtonClick(page.path)}
                   size="small"
-                  color={selectedPage === page.path ? 'success' : 'primary'}
-                  variant={selectedPage === page.path ? 'outlined' : 'text'}
                   sx={{
                     borderRadius: '80px',
-                    padding: 1,
                     fontSize: '0.9rem',
                     fontWeight : selectedPage === page.path ? 'bold' : 'normal',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     textTransform: 'none',
+                    gap: 1,
                   }}
                 >
+                  {(() => {
+                    if (selectedPage === page.path) {
+                      return (
+                        <Typography 
+                          color="primary"
+                          sx={{
+                            fontSize: '1.9rem',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          &bull;
+                        </Typography>
+                      )
+                    }
+                  })()}
                   {page.label}
                 </Button>
               ))}
@@ -128,11 +141,11 @@ export default function NavigationBar() {
             overflow: 'hidden',
             whiteSpace: 'nowrap',
             backgroundColor: '#1F1F1F',
-            padding: 1.5,
+            padding: 2.3,
           }}
           renderValue={(selected) => (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <AudioFileRoundedIcon sx={{ marginRight: 2, ml:1 }} color="success" />
+            <AudioFileRoundedIcon sx={{ marginRight: 2, ml:1 }} color="primary" />
             {selected}
           </Box>
           )}
@@ -141,6 +154,7 @@ export default function NavigationBar() {
               sx: {
                 mt: 1,
                 color: '#878787',
+                bgcolor: '#1F1F1F',
                 borderRadius: 5,
                 '& .MuiMenu-list': {
                   paddingTop: 0,
@@ -156,7 +170,6 @@ export default function NavigationBar() {
                 },
                 '& .Mui-selected': {
                   color: '#F5F5F5',
-                  bgcolor: '#1F1F1F',
                 },
               },
             },

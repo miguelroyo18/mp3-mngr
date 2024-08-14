@@ -12,8 +12,8 @@ const greenTheme = createTheme({
       secondary: '#B0B0B0',
     },
 
-    success: {
-      main: '#40A578',
+    primary: {
+      main: '#81FFD9',
       light: '#9DDE8B',
       dark: '#006769',
       contrastText: '#FFFFFF',
