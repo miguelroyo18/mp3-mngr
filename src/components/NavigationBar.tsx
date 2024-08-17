@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
 import { Link } from 'react-router-dom';
 
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -16,15 +17,7 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import AudioFileRoundedIcon from '@mui/icons-material/AudioFileRounded';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  flexShrink: 0,
-  borderRadius: 50,
-  backgroundColor: '#1F1F1F',
-  padding: '8px 12px',
-}));
+import { StyledToolbar, CustomInput, MenuPropsStyle } from '../styles/NavigationBarStyles.js';
 
 export default function NavigationBar() {
   const [open, setOpen] = useState(false);
@@ -42,29 +35,16 @@ export default function NavigationBar() {
 
   const handleButtonClick = (page) => {
     setSelectedPage(page);
+    if (open) {
+      setOpen(false);
+    }
   };
 
-  const [dir, setDir] = React.useState('');
+  const [dir, setDir] = React.useState('/home/miguel/Downloads');
 
   const handleSelectChange = (event: SelectChangeEvent) => {
     setDir(event.target.value);
   };
-
-  // TODO: Move somewhere else
-  const CustomInput = styled(InputBase)(({ theme }) => ({
-    '&:before': {
-      borderBottom: 'none',
-    },
-    '&:after': {
-      borderBottom: 'none',
-    },
-    '&:hover:not(.Mui-disabled):before': {
-      borderBottom: 'none',
-    },
-    '& .MuiInputBase-input': {
-    color: '#878787',
-    },
-  }));
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', mt: 2 }}>
@@ -73,7 +53,6 @@ export default function NavigationBar() {
         color="inherit"
         sx={{
           ml: 4,
-          mr: 2,
           whiteSpace: 'nowrap',
           fontWeight: 'bold',
           letterSpacing: '0.5px',
@@ -82,10 +61,10 @@ export default function NavigationBar() {
       >
         mp3-mngr
       </Typography>
-      <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+      <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', justifyContent: 'center', width: '100%', ml: 10, mr: 4 }}>
         <StyledToolbar variant="dense" disableGutters>
-          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
-            <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 5 }}>
+          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 0 }}>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 5, mr: 4 }}>
               {pages.map((page) => (
                 <Button
                   key={page.path}
@@ -124,68 +103,25 @@ export default function NavigationBar() {
                 </Button>
               ))}
             </Box>
+
+            <Select
+              value={dir}
+              onChange={handleSelectChange}
+              input={<CustomInput />}
+              IconComponent={KeyboardArrowDownRoundedIcon}
+              renderValue={(selected) => (
+              <Box sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
+                <AudioFileRoundedIcon sx={{ marginRight: 2, ml: 1 }} color="primary" />
+                {selected}
+              </Box>
+              )}
+              MenuProps={MenuPropsStyle}
+            >
+              <MenuItem value={"/home/miguel/Downloads"}>/home/miguel/Downloads</MenuItem>
+              <MenuItem value={"/home/test/Downloads"}>/home/test/Downloads</MenuItem>
+            </Select>
           </Box>
         </StyledToolbar>
-      </Box>
-      <Box sx={{ display: { md: 'flex', xs: 'none' }, alignItems: 'center', mr: 4 }}>
-        <Select
-          value={dir}
-          onChange={handleSelectChange}
-          input={<CustomInput />}
-          IconComponent={KeyboardArrowDownRoundedIcon}
-          sx={{
-            fontSize: '0.9rem',
-            borderRadius: '50px',
-            textTransform: 'none',
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            backgroundColor: '#1F1F1F',
-            padding: 2.3,
-          }}
-          renderValue={(selected) => (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <AudioFileRoundedIcon sx={{ marginRight: 2, ml:1 }} color="primary" />
-            {selected}
-          </Box>
-          )}
-          MenuProps={{
-            PaperProps: {
-              sx: {
-                mt: 1,
-                color: '#878787',
-                bgcolor: '#1F1F1F',
-                borderRadius: 5,
-                '& .MuiMenu-list': {
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                },
-                '& .MuiMenuItem-root': {
-                  padding: '12px 20px',
-                  bgcolor: '#1F1F1F',
-                  fontSize: '0.9rem',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                },
-                '& .Mui-selected': {
-                  color: '#F5F5F5',
-                },
-              },
-            },
-            transformOrigin: {
-              vertical: 'top',
-              horizontal: 'center',
-            },
-            anchorOrigin: {
-              vertical: 'bottom',
-              horizontal: 'center',
-            },
-          }}
-        >
-          <MenuItem value={"home/miguel/Downloads"}>/home/miguel/Downloads</MenuItem>
-          <MenuItem value={"home/miguel/Downloads{{fdakjafd}}"}>/home/miguel/Downloadskajsfdlkjasfdlkjqw</MenuItem>
-        </Select>
       </Box>
       <Box sx={{ display: { xs: 'flex', md: 'none' }, mr: 4 }}>
         <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
@@ -194,10 +130,43 @@ export default function NavigationBar() {
         <Drawer anchor="top" open={open} onClose={toggleDrawer(false)}>
           <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
             {pages.map((page) => (
-              <MenuItem component={Link} to={page.path} sx={{ textTransform: 'none' }} >
+              <MenuItem 
+                component={Link} 
+                to={page.path} 
+                onClick={() => handleButtonClick(page.path)}
+                variant="outlined"
+                sx={{ 
+                  borderRadius: '5px',
+                  fontSize: '0.9rem',
+                  fontWeight : selectedPage === page.path ? 'bold' : 'normal',
+                  display: 'flex',
+                  textTransform: 'none',
+                  color: selectedPage === page.path ? 'primary.main' : '#878787',
+                }}
+              >
                 {page.label}
               </MenuItem>
             ))}
+            <Divider />
+            <Select
+              value={dir}
+              onChange={handleSelectChange}
+              input={<CustomInput />}
+              IconComponent={KeyboardArrowDownRoundedIcon}
+              sx={{
+                mt: 1
+              }}
+              renderValue={(selected) => (
+              <Box sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
+                <AudioFileRoundedIcon sx={{ marginRight: 2, ml: 1 }} color="primary" />
+                {selected}
+              </Box>
+              )}
+              MenuProps={MenuPropsStyle}
+            >
+              <MenuItem value={"/home/miguel/Downloads"}>/home/miguel/Downloads</MenuItem>
+              <MenuItem value={"/home/test/Downloads"}>/home/test/Downloads</MenuItem>
+            </Select>
           </Box>
         </Drawer>
       </Box>
