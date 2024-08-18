@@ -74,13 +74,14 @@ export default function NavigationBar() {
                   onClick={() => handleButtonClick(page.path)}
                   size="small"
                   sx={{
-                    borderRadius: '80px',
+                    borderRadius: '15px',
                     fontSize: '0.9rem',
                     fontWeight : selectedPage === page.path ? 'bold' : 'normal',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     textTransform: 'none',
+                    padding: '10 10 0 0',
                     gap: 1,
                   }}
                 >
@@ -90,7 +91,7 @@ export default function NavigationBar() {
                         <Typography 
                           color="primary"
                           sx={{
-                            fontSize: '1.9rem',
+                            fontSize: '1.6rem',
                             fontWeight: 'bold',
                           }}
                         >

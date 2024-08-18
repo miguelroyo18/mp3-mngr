@@ -7,7 +7,7 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   flexShrink: 0,
-  borderRadius: 50,
+  borderRadius: 15,
   backgroundColor: '#1F1F1F',
   padding: '8px 12px',
   width: '100%',
@@ -38,7 +38,7 @@ export const MenuPropsStyle = {
     sx: {
       mt: 4,
       color: '#878787',
-      borderRadius: 5,
+      borderRadius: 4,
       bgcolor: '#1F1F1F',
       '& .MuiMenu-list': {
         paddingTop: 0,
