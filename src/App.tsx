@@ -56,7 +56,7 @@ function SearchPage() {
     <Box
       className="Search"
       sx={{
-        px: { xs: 2, md: 4 },
+        px: { xs: 2, md: 2 },
         pb: { xs: 2, sm: 2, md: 3 },
         mt: 2,
         flex: 1,
@@ -64,6 +64,7 @@ function SearchPage() {
         flexDirection: 'column',
         minWidth: 0,
         height: '100dvh',
+        overflowY: 'hidden',
         gap: 1,
       }}
     >

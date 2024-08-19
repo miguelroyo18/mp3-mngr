@@ -8,7 +8,6 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   justifyContent: 'space-between',
   flexShrink: 0,
   borderRadius: 15,
-  backgroundColor: '#1F1F1F',
   padding: '8px 12px',
   width: '100%',
 }));

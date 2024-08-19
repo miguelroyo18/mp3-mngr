@@ -61,9 +61,9 @@ export default function NavigationBar() {
       >
         mp3-mngr
       </Typography>
-      <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', justifyContent: 'center', width: '100%', ml: 10, mr: 4 }}>
+      <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', justifyContent: 'center', width: '60%', ml: 10, mr: 4 }}>
         <StyledToolbar variant="dense" disableGutters>
-          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 0 }}>
+          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 0, gap: 5 }}>
             <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 5, mr: 4 }}>
               {pages.map((page) => (
                 <Button
@@ -74,7 +74,7 @@ export default function NavigationBar() {
                   onClick={() => handleButtonClick(page.path)}
                   size="small"
                   sx={{
-                    borderRadius: '15px',
+                    borderRadius: '10px',
                     fontSize: '0.9rem',
                     fontWeight : selectedPage === page.path ? 'bold' : 'normal',
                     display: 'flex',
@@ -104,7 +104,6 @@ export default function NavigationBar() {
                 </Button>
               ))}
             </Box>
-
             <Select
               value={dir}
               onChange={handleSelectChange}

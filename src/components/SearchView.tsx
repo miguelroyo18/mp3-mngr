@@ -7,14 +7,17 @@ import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import IconButton, { iconButtonClasses } from '@mui/material/IconButton';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
-import DownloadingRoundedIcon from '@mui/icons-material/DownloadingRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 
 import { customSearchInput } from '../styles/SearchViewStyles.js';
 
@@ -26,8 +29,53 @@ export default function SearchView({
   loading,
 }) {
 
+
+  const noSearchResults = searchResults.length === 0;
+
+
+  const renderNoSearchResultsMessage = () => (
+    <Box
+      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, justifyContent: 'center', height: '60vh' }}
+    >
+      <SearchRoundedIcon 
+        sx={{
+          fontSize: '4rem'
+        }}
+      >
+      </SearchRoundedIcon>
+      <Typography
+        variant="h4"
+        sx={{ alignItems: 'flex-start' }}
+      >
+        No Results
+      </Typography>
+  
+      <Typography
+        sx={{
+          fontSize: '1rem',
+          mt: -1.5,
+          opacity: 0.8
+        }}
+      >
+        Start searching now.
+      </Typography>
+  
+    </Box>
+  );
+
+  const renderLoadingIndicator = () => (
+    <Box
+      sx={{ display: 'flex', flexDirection: 'column', gap: 2,  alignItems: 'center', justifyContent: 'center', height: '60vh' }}
+    >
+      <CircularProgress 
+        thickness={4}
+        size={40}
+      />
+    </Box>
+  );
+
   const renderSearch = () => (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', mb: 3 }}>
       <OutlinedInput
         fullWidth
         placeholder="Artists, songs and more"
@@ -52,44 +100,43 @@ export default function SearchView({
 
   const renderListElements = () => {
     return (
-      <React.Fragment>
-        <Box
-          className="SearchView"
-          sx={{
-            borderRadius: 'sm',
-            py: 1.5,
-            flexWrap: 'wrap',
-            gap: 1.5,
-            '& > *': {
-              minWidth: { xs: '120px', md: '160px' },
-            },
-          }}
-        >
-          <FormControl sx={{ flex: 1, width: '100%' }}>
-            {renderSearch()}
-          </FormControl>
-        </Box>
-        <Box
-          sx={{
-            overflowY: 'auto',
-            maxHeight: 'calc(100vh - 250px)', // TODO: Change accordingly when introducing music bar
-            overflowX: 'hidden',
-            mt: 2,
-            borderRadius: '15px'
-          }}
-        >
-          {searchResults.map((result) => (
+      <Box
+        sx={{
+          overflowY: 'auto',
+          maxHeight: 'calc(100vh - 250px)', // Adjust accordingly when introducing music bar
+          overflowX: 'hidden',
+          mt: 2,
+          borderRadius: '15px',
+        }}
+      >
+        {searchResults.map((result) => {
+          const thumbnailUrl = result.videoThumbnails[0]?.url;
+  
+          return (
             <List key={result.id} sx={{ padding: 0 }}>
               <ListItem
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
                 }}
               >
+                <ListItemAvatar>
+                  <Avatar
+                    src={thumbnailUrl}
+                    alt={result.title}
+                    variant="square"
+                    sx={{ width: 60, height: 60, borderRadius: '5px', mr: 2 }}
+                  />
+                </ListItemAvatar>
+  
                 <ListItemText
                   primary={
-                    <Typography fontWeight={600} gutterBottom>
+                    <Typography 
+                      gutterBottom
+                      sx={{
+                        fontSize: '0.9rem',
+                        fontWeight: 'bold'
+                      }}
+                    >
                       {result.title}
                     </Typography>
                   }
@@ -99,56 +146,41 @@ export default function SearchView({
                         sx={{
                           display: 'flex',
                           alignItems: 'center',
-                          gap: 0.5,
-                          mb: 1,
+                          mt: -0.5
                         }}
                       >
                         <Typography variant="body2">{result.author}</Typography>
                       </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                        <Chip
-                          variant="outlined"
-                          size="small"
-                          color="primary"
-                          label={result.viewCountText}
-                        />
-                        {result.downloading ? (
-                          <Button
-                            sx={{ position: 'absolute', right: 0, mr: 4 }}
-                            variant="contained"
-                            size="small"
-                            startIcon={<DownloadingRoundedIcon />}
-                            color="success"
-                          >
-                            Download
-                          </Button>
-                        ) : (
-                          <Button
-                            sx={{ position: 'absolute', right: 0, mr: 4 }}
-                            variant="contained"
-                            size="small"
-                            startIcon={<DownloadRoundedIcon />}
-                            color="primary"
-                          >
-                            Download
-                          </Button>
-                        )}
-                      </Box>
                     </>
                   }
                 />
+                <Box sx={{ display: 'flex', ml: 2 }}>
+                <IconButton
+                  sx={{ color: 'primary.main' }}
+                  aria-label="download"
+                >
+                  <DownloadRoundedIcon sx={{ fontSize: '1.5rem' }} />
+                </IconButton>
+                <IconButton
+                  sx={{ color: 'primary.main' }}
+                  aria-label="play"
+                >
+                  <PlayArrowRoundedIcon sx={{ fontSize: '1.8rem' }} />
+                </IconButton>
+              </Box>
               </ListItem>
               <Divider />
             </List>
-          ))}
-        </Box>
-      </React.Fragment>
+          );
+        })}
+      </Box>
     );
   };
 
   return (
     <Box>
-      {renderListElements()}
+      {renderSearch()}
+      {loading ? renderLoadingIndicator() : (noSearchResults ? renderNoSearchResultsMessage() : renderListElements())}
     </Box>
   );
 }
