@@ -52,7 +52,7 @@ export default function NavigationBar() {
         variant="h6"
         color="inherit"
         sx={{
-          ml: 4,
+          ml: {xs: 2, md: 4},
           whiteSpace: 'nowrap',
           fontWeight: 'bold',
           letterSpacing: '0.5px',
@@ -61,7 +61,7 @@ export default function NavigationBar() {
       >
         mp3-mngr
       </Typography>
-      <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', justifyContent: 'center', width: '60%', ml: 10, mr: 4 }}>
+      <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', justifyContent: 'center', width: '60%', ml: 10, mr: 2 }}>
         <StyledToolbar variant="dense" disableGutters>
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 0, gap: 5 }}>
             <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 5, mr: 4 }}>
@@ -123,7 +123,7 @@ export default function NavigationBar() {
           </Box>
         </StyledToolbar>
       </Box>
-      <Box sx={{ display: { xs: 'flex', md: 'none' }, mr: 4 }}>
+      <Box sx={{ display: { xs: 'flex', md: 'none' }, mr: 2 }}>
         <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
           <MenuRoundedIcon />
         </IconButton>

@@ -13,6 +13,10 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.0",
+    "@reduxjs/toolkit": "^1.6.2",
+    "lodash.debounce": "^4.0.8",
+    "react-draggable-list": "^4.0.3",
+    "react-redux": "^7.2.4",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },

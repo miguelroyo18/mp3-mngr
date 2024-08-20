@@ -9,6 +9,10 @@ import { ThemeProvider } from '@mui/material/styles';
 
 import NavigationBar from './components/NavigationBar.tsx';
 import SearchView from './components/SearchView.tsx';
+import Player, {
+  Track,
+  PlayerInterface,
+} from "./components/react-material-music-player/index.js";
 
 import { SearchResultsProvider, useSearchResults } from './SearchResultsContext.js';
 import greenTheme from './theme.js';
@@ -56,7 +60,7 @@ function SearchPage() {
     <Box
       className="Search"
       sx={{
-        px: { xs: 2, md: 2 },
+        px: { xs: 2, md: 4 },
         pb: { xs: 2, sm: 2, md: 3 },
         mt: 2,
         flex: 1,
@@ -133,6 +137,16 @@ export default function App() {
               <Route path="/my-music" element={<MyMusicPage />} />
               <Route path="/discover" element={<DiscoverPage />} />
             </Routes>
+            <Player
+              sx={{
+                marginBottom: 3,
+                borderRadius: '15px',
+                ml: {xs: 2, md: 4},
+                mr: 2,
+                backgroundColor: '#0D0D0D',
+              }}
+              defaultArt="https://raw.githubusercontent.com/the-maazu/react-material-music-player/master/sample_media/bach.jpg"
+            />
           </Router>
         </CssBaseline>
       </ThemeProvider>

@@ -113,7 +113,7 @@ export default function SearchView({
           const thumbnailUrl = result.videoThumbnails[0]?.url;
   
           return (
-            <List key={result.id} sx={{ padding: 0 }}>
+            <List key={result.id} sx={{ padding: 0, mr: -1.5 }}>
               <ListItem
                 sx={{
                   display: 'flex',
@@ -149,25 +149,25 @@ export default function SearchView({
                           mt: -0.5
                         }}
                       >
-                        <Typography variant="body2">{result.author}</Typography>
+                        <Typography color="primary" variant="body2">{result.author}</Typography>
                       </Box>
                     </>
                   }
                 />
-                <Box sx={{ display: 'flex', ml: 2 }}>
-                <IconButton
-                  sx={{ color: 'primary.main' }}
-                  aria-label="download"
-                >
-                  <DownloadRoundedIcon sx={{ fontSize: '1.5rem' }} />
-                </IconButton>
-                <IconButton
-                  sx={{ color: 'primary.main' }}
-                  aria-label="play"
-                >
-                  <PlayArrowRoundedIcon sx={{ fontSize: '1.8rem' }} />
-                </IconButton>
-              </Box>
+                <Box sx={{ display: 'flex', ml: 1 }}>
+                  <IconButton
+                    sx={{ color: 'primary.main' }}
+                    aria-label="download"
+                  >
+                    <DownloadRoundedIcon sx={{ fontSize: '1.5rem' }} />
+                  </IconButton>
+                  <IconButton
+                    sx={{ color: 'primary.main' }}
+                    aria-label="play"
+                  >
+                    <PlayArrowRoundedIcon sx={{ fontSize: '1.8rem' }} />
+                  </IconButton>
+                </Box>
               </ListItem>
               <Divider />
             </List>
