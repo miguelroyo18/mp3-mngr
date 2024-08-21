@@ -5,7 +5,7 @@ const greenTheme = createTheme({
     mode: 'dark',
     background: {
       default: '#0D0D0D',
-      paper: '#121212',
+      paper: '#1F1F1F',
     },
     text: {
       primary: '#FFFFFF',

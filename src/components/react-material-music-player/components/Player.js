@@ -17,10 +17,11 @@ import PlaylistControl from "./Playlist/PlaylistControl.js";
 const PREFIX = "Player";
 
 const RootPaper = styled(Paper)(({ theme }) => ({
-  width: "100%",
   // positioning
-  position: "fixed",
-  bottom: 0,
+  position: "sticky",
+  bottom: 30,
+  backgroundColor: theme.palette.background.paper,
+  backgroundImage: 'none',
   // prevent screen size overflow by making padding part of dimensions
   boxSizing: "border-box",
   borderRadius: `${theme.shape.borderRadius} ${theme.shape.borderRadius} 0 0`,
@@ -36,8 +37,8 @@ const SwipeableDrawerRoot = styled(Box)(({ theme }) => ({
   // fixed size root for swipeable
   // width including padding
   // boxSizing: "border-box",
-  height: "80vh",
-  marginTop: theme.spacing(6),
+  height: "85vh",
+  backgroundColor: theme.palette.background.paper, // button color
   padding: theme.spacing(1),
   overflow: "hidden",
 
@@ -122,9 +123,10 @@ export default function Player(props) {
       <CoverArt
         src={playlist[currentTrack]?.coverArt ?? defaultArt}
         sx={{
-          height: "48px",
-          width: "48px",
+          height: "40px",
+          width: "40px",
           flexShrink: 0,
+          ml: 1.2,
         }}
       />
       <TrackDetails
@@ -144,7 +146,6 @@ export default function Player(props) {
       {width > theme.breakpoints.values.md && (
         <>
           <ProgressBar sx={{ flexGrow: 6 }} />
-          <PlaylistControl playlistViewMode="popover" />
         </>
       )}
     </RowBox>
@@ -170,9 +171,12 @@ export default function Player(props) {
           }}
         />
       </CenterChildBox>
-      <ProgressBar />
-      <Controls disabled={playlist[currentTrack] === undefined} />
-      <PlaylistControl playlistViewMode="expand" />
+      <ProgressBar
+        sx={{
+          mb: 5,
+        }}
+      />
+      <Controls sx={{ mb: 4 }} disabled={playlist[currentTrack] === undefined} />
     </ColumnBox>
   );
 

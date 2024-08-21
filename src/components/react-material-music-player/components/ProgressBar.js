@@ -32,6 +32,8 @@ export default function ProgressBar(props) {
   return (
     <Box
       sx={{
+        mr: 1.2,
+        ml: 5,
         display: "flex",
         flexDirection: "row",
         wrap: "nowrap",
