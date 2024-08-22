@@ -142,10 +142,8 @@ export default function App() {
                 borderRadius: '15px',
                 ml: {xs: 2, md: 4},
                 mr: {xs: 2, md: 4},
-                color: '#878787',
                 padding: 0.5,
               }}
-              defaultArt="https://raw.githubusercontent.com/the-maazu/react-material-music-player/master/sample_media/bach.jpg"
             />
           </Router>
         </CssBaseline>

@@ -35,6 +35,7 @@ export default function TrackDetails(props) {
           typography: "subtitle2",
           whiteSpace: "nowrap",
           overflow: "hidden",
+          color: "text.paper",
         }}
       >
         {artist}

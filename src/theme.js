@@ -10,6 +10,7 @@ const greenTheme = createTheme({
     text: {
       primary: '#FFFFFF',
       secondary: '#B0B0B0',
+      paper: '#878787'
     },
 
     primary: {

@@ -1,5 +1,4 @@
 import React from "react";
-
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import actionCreators from "../redux/actionCreators.js";
 
@@ -11,7 +10,6 @@ import secondsToString from "../utils/secondsToString.js";
 export default function ProgressBar(props) {
   const sx = props.sx;
   const { timeLeft, currentTime } = useSelector(
-    /**@type {import("../redux/types.js").useSelectCb} */
     ({ timeLeft, currentTime }) => ({
       timeLeft,
       currentTime,
@@ -19,7 +17,6 @@ export default function ProgressBar(props) {
     shallowEqual
   );
 
-  // NaN on division by zero
   const progress = (currentTime / (timeLeft + currentTime)) * 100 || 0;
 
   const dispatch = useDispatch();
@@ -33,10 +30,10 @@ export default function ProgressBar(props) {
     <Box
       sx={{
         mr: 1.2,
-        ml: 5,
+        ml: 1.2,
+        color: 'text.paper',
         display: "flex",
         flexDirection: "row",
-        wrap: "nowrap",
         alignItems: "center",
         "& > .children": {
           mx: 1,
@@ -44,7 +41,7 @@ export default function ProgressBar(props) {
         ...sx,
       }}
     >
-      <Typography className="children">
+      <Typography sx={{ fontSize: '0.9rem' }} className="children">
         {secondsToString(currentTime)}
       </Typography>
       <Slider
@@ -52,8 +49,22 @@ export default function ProgressBar(props) {
         aria-labelledby="continuous-slider"
         value={progress}
         onChange={handleSliderChange}
+        sx={{
+          color: "primary.main",
+          height: 4,
+          '& .MuiSlider-thumb': {
+            display: 'none',
+          },
+          '& .MuiSlider-track': {
+            border: 'none',
+          },
+          '& .MuiSlider-rail': {
+            opacity: 0.5,
+            backgroundColor: '#bfbfbf',
+          },
+        }}
       />
-      <Typography className="children">{secondsToString(timeLeft)}</Typography>
+      <Typography sx={{ fontSize: '0.9rem' }} className="children">-{secondsToString(timeLeft)}</Typography>
     </Box>
   );
 }

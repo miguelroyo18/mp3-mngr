@@ -104,9 +104,11 @@ export default function Player(props) {
     shallowEqual
   );
 
+  const hasTrack = playlist[currentTrack]?.coverArt ?? defaultArt;
+
   const openSwipeableDrawer = () => {
     // only maximise if docked and not large
-    if (!disableDrawer && width < theme.breakpoints.values.md) {
+    if (!disableDrawer && width < theme.breakpoints.values.md && hasTrack) {
       setMaximised(true);
     }
   };
@@ -123,10 +125,11 @@ export default function Player(props) {
       <CoverArt
         src={playlist[currentTrack]?.coverArt ?? defaultArt}
         sx={{
-          height: "40px",
-          width: "40px",
+          height: "45px",
+          width: "45px",
           flexShrink: 0,
           ml: 1.2,
+          mr: 1.2,
         }}
       />
       <TrackDetails
@@ -139,15 +142,15 @@ export default function Player(props) {
           flexShrink: 0,
         }}
       />
+      {width > theme.breakpoints.values.md && (
+        <>
+          <ProgressBar sx={{ flexGrow: 6, ml: 5, mr: 5 }} />
+        </>
+      )}
       <Controls
         disabled={playlist[currentTrack] === undefined}
         isSmall={width <= theme.breakpoints.values.sm}
       />
-      {width > theme.breakpoints.values.md && (
-        <>
-          <ProgressBar sx={{ flexGrow: 6 }} />
-        </>
-      )}
     </RowBox>
   );
 
@@ -166,17 +169,17 @@ export default function Player(props) {
         />
         <TrackDetails
           sx={{
-            mt: 1,
+            mt: 2,
             textAlign: "center",
           }}
         />
       </CenterChildBox>
       <ProgressBar
         sx={{
-          mb: 5,
+          mb: 2,
         }}
       />
-      <Controls sx={{ mb: 4 }} disabled={playlist[currentTrack] === undefined} />
+      <Controls sx={{ mb: 6 }} disabled={playlist[currentTrack] === undefined} />
     </ColumnBox>
   );
 

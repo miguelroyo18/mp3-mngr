@@ -19,6 +19,12 @@ import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 
+import Player, {
+  Track,
+  PlayerInterface,
+  // RepeatModes,
+} from "./react-material-music-player/index.js";
+
 import { customSearchInput } from '../styles/SearchViewStyles.js';
 
 export default function SearchView({
@@ -32,6 +38,22 @@ export default function SearchView({
 
   const noSearchResults = searchResults.length === 0;
 
+  const playTrack = (thumbnailUrl, title, author, url) => {
+
+    const TEST_MEDIA =
+      "https://github.com/the-maazu/react-material-music-player/raw/main/sample_media/";
+  
+    PlayerInterface.setPlaylist([
+      new Track(
+        "1",
+        thumbnailUrl,
+        title,
+        author,
+        url
+      ),
+    ]);
+    
+  };
 
   const renderNoSearchResultsMessage = () => (
     <Box
@@ -83,6 +105,7 @@ export default function SearchView({
           <IconButton
             onClick={onSearch}
             color="primary"
+            sx={{ ml: -1 }}
           >
             <SearchRoundedIcon />
           </IconButton>
@@ -111,6 +134,7 @@ export default function SearchView({
       >
         {searchResults.map((result) => {
           const thumbnailUrl = result.videoThumbnails[0]?.url;
+          const url = "https://www.youtube.com/watch?v=" + result.videoId
   
           return (
             <List key={result.id} sx={{ padding: 0, mr: -1.5 }}>
@@ -164,6 +188,7 @@ export default function SearchView({
                   <IconButton
                     sx={{ color: 'primary.main' }}
                     aria-label="play"
+                    onClick={() => playTrack(thumbnailUrl, result.title, result.author, url)}
                   >
                     <PlayArrowRoundedIcon sx={{ fontSize: '1.8rem' }} />
                   </IconButton>
