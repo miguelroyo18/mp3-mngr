@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -10,19 +8,17 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
-import IconButton, { iconButtonClasses } from '@mui/material/IconButton';
-import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 
 import Player, {
   Track,
   PlayerInterface,
-  // RepeatModes,
 } from "./react-material-music-player/index.js";
 
 import { customSearchInput } from '../styles/SearchViewStyles.js';
@@ -38,21 +34,49 @@ export default function SearchView({
 
   const noSearchResults = searchResults.length === 0;
 
-  const playTrack = (thumbnailUrl, title, author, url) => {
+  const downloadTempTrack = async (track_id) => {
+      try {
+          const response = await fetch('/api/download_track', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ track_id: track_id }),
+          });
 
-    const TEST_MEDIA =
-      "https://github.com/the-maazu/react-material-music-player/raw/main/sample_media/";
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+      } catch (error) {
+          console.log('Error downloading track:', error);
+      }
+  }
+
+  const [highlightedTrackId, setHighlightedTrackId] = useState(null);
+
   
-    PlayerInterface.setPlaylist([
-      new Track(
-        "1",
-        thumbnailUrl,
-        title,
-        author,
-        url
-      ),
-    ]);
-    
+  const playTrack = async (trackId, thumbnailUrl, title, author) => {
+    setHighlightedTrackId(trackId);
+
+    try {
+      PlayerInterface.clearPlaylist()
+      await downloadTempTrack(trackId);
+
+      PlayerInterface.play ([
+        new Track(
+          "1",
+          thumbnailUrl,
+          title,
+          author,
+          encodeURI('http://192.168.1.35:5001/api/media/' + title + '.webm'),
+        ),
+      ]);
+
+    } catch (error) {
+      console.error('Error downloading or playing the track:', error);
+    } finally {
+      setHighlightedTrackId(null);
+    }
   };
 
   const renderNoSearchResultsMessage = () => (
@@ -61,13 +85,14 @@ export default function SearchView({
     >
       <SearchRoundedIcon 
         sx={{
-          fontSize: '4rem'
+          fontSize: '4rem',
+          opacity: 0.9
         }}
       >
       </SearchRoundedIcon>
       <Typography
         variant="h4"
-        sx={{ alignItems: 'flex-start' }}
+        sx={{ alignItems: 'flex-start', opacity: 0.9 }}
       >
         No Results
       </Typography>
@@ -76,7 +101,7 @@ export default function SearchView({
         sx={{
           fontSize: '1rem',
           mt: -1.5,
-          opacity: 0.8
+          opacity: 0.5
         }}
       >
         Start searching now.
@@ -135,13 +160,19 @@ export default function SearchView({
         {searchResults.map((result) => {
           const thumbnailUrl = result.videoThumbnails[0]?.url;
           const url = "https://www.youtube.com/watch?v=" + result.videoId
+
+          const isHighlighted = highlightedTrackId === result.videoId;
   
           return (
             <List key={result.id} sx={{ padding: 0, mr: -1.5 }}>
               <ListItem
                 sx={{
                   display: 'flex',
+                  cursor: 'pointer',
+                  backgroundColor: isHighlighted ? 'rgba(200, 200, 200, 0.4)' : 'transparent',
+                  transition: 'background-color 0.3s ease, transform 0.3s ease',
                 }}
+                onClick={() => playTrack(result.videoId, thumbnailUrl, result.title, result.author)}
               >
                 <ListItemAvatar>
                   <Avatar
@@ -181,16 +212,9 @@ export default function SearchView({
                 <Box sx={{ display: 'flex', ml: 1 }}>
                   <IconButton
                     sx={{ color: 'primary.main' }}
-                    aria-label="download"
+                    aria-label="add"
                   >
-                    <DownloadRoundedIcon sx={{ fontSize: '1.5rem' }} />
-                  </IconButton>
-                  <IconButton
-                    sx={{ color: 'primary.main' }}
-                    aria-label="play"
-                    onClick={() => playTrack(thumbnailUrl, result.title, result.author, url)}
-                  >
-                    <PlayArrowRoundedIcon sx={{ fontSize: '1.8rem' }} />
+                    <AddRoundedIcon sx={{ fontSize: '1.5rem' }} />
                   </IconButton>
                 </Box>
               </ListItem>

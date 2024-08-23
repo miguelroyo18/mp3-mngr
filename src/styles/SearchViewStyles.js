@@ -1,5 +1,3 @@
-import { styled } from '@mui/material/styles';
-
 export const customSearchInput = {
   borderRadius: '15px',
   height: '45px',
