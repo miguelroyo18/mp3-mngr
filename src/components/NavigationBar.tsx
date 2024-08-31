@@ -19,7 +19,12 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 
 import { StyledToolbar, CustomInput, MenuPropsStyle } from '../styles/NavigationBarStyles.js';
 
-export default function NavigationBar() {
+export default function NavigationBar({
+  musicDir,
+  setMusicDir,
+  directories
+}) {
+
   const [open, setOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState('');
 
@@ -40,10 +45,8 @@ export default function NavigationBar() {
     }
   };
 
-  const [dir, setDir] = React.useState('/home/miguel/Downloads');
-
   const handleSelectChange = (event: SelectChangeEvent) => {
-    setDir(event.target.value);
+    setMusicDir(event.target.value);
   };
 
   return (
@@ -105,7 +108,7 @@ export default function NavigationBar() {
               ))}
             </Box>
             <Select
-              value={dir}
+              value={musicDir}
               onChange={handleSelectChange}
               input={<CustomInput />}
               IconComponent={KeyboardArrowDownRoundedIcon}
@@ -117,8 +120,11 @@ export default function NavigationBar() {
               )}
               MenuProps={MenuPropsStyle}
             >
-              <MenuItem value={"/home/miguel/Downloads"}>/home/miguel/Downloads</MenuItem>
-              <MenuItem value={"/home/test/Downloads"}>/home/test/Downloads</MenuItem>
+              {directories.map((directory) => (
+                  <MenuItem key={directory} value={directory}>
+                    {directory}
+                  </MenuItem>
+              ))}
             </Select>
           </Box>
         </StyledToolbar>
@@ -149,7 +155,7 @@ export default function NavigationBar() {
             ))}
             <Divider />
             <Select
-              value={dir}
+              value={musicDir}
               onChange={handleSelectChange}
               input={<CustomInput />}
               IconComponent={KeyboardArrowDownRoundedIcon}
@@ -164,8 +170,11 @@ export default function NavigationBar() {
               )}
               MenuProps={MenuPropsStyle}
             >
-              <MenuItem value={"/home/miguel/Downloads"}>/home/miguel/Downloads</MenuItem>
-              <MenuItem value={"/home/test/Downloads"}>/home/test/Downloads</MenuItem>
+              {directories.map((directory) => (
+                  <MenuItem key={directory} value={directory}>
+                    {directory}
+                  </MenuItem>
+              ))}
             </Select>
           </Box>
         </Drawer>

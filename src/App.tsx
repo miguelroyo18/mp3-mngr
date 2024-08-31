@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+import Alert from '@mui/material/Alert';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
+import Snackbar from '@mui/material/Snackbar';
+import Slide from '@mui/material/Slide';
 import Box from '@mui/material/Box';
 
 import { ThemeProvider } from '@mui/material/styles';
@@ -124,29 +127,107 @@ function DiscoverPage() {
   );
 }
 
+const TransitionUp = (props) => {
+  return <Slide {...props} direction="up" />;
+};
+
+function AppContent() {
+  const [musicDir, setMusicDir] = useState('');
+  const [directories, setDirectories] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  const prevDirectoriesLength = useRef(directories.length);
+
+  useEffect(() => {
+    const fetchDirectories = async () => {
+      try {
+        const response = await fetch('/api/find_music_directories');
+        const data = await response.json();
+
+        setDirectories(data);
+
+        if (musicDir === '' || (!directories.includes(musicDir))) {
+          setMusicDir(data[data.length - 1]);
+        }
+
+        const newLength = directories.length;
+        const previousLength = prevDirectoriesLength.current;
+
+        if (newLength > previousLength) {
+            setSnackbarMessage('A new device has been added.');
+            setSnackbarOpen(true);
+        } else if (newLength < previousLength) {
+            setSnackbarMessage('A device has been removed.');
+            setSnackbarOpen(true);
+        }
+
+        prevDirectoriesLength.current = newLength;
+      } catch (error) {
+        console.error('Error fetching directories:', error);
+      }
+    };
+
+    fetchDirectories();
+
+  const intervalId = setInterval(fetchDirectories, 5000);
+    return () => clearInterval(intervalId);
+  }, [musicDir, directories]);
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+
+  return (
+    <CssBaseline>
+      <Router>
+        <NavigationBar 
+          musicDir={musicDir}
+          setMusicDir={setMusicDir}
+          directories={directories}
+        />
+        <Routes>
+          <Route index element={<SearchPage />} />
+          <Route path="/my-music" element={<MyMusicPage />} />
+          <Route path="/discover" element={<DiscoverPage />} />
+        </Routes>
+        <Player
+          sx={{
+            borderRadius: '15px',
+            ml: {xs: 2, md: 4},
+            mr: {xs: 2, md: 4},
+            padding: 0.5,
+          }}
+        />
+        <Snackbar
+          autoHideDuration={3000}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          open={snackbarOpen}
+          onClose={handleSnackbarClose}
+          TransitionComponent={TransitionUp}
+        >
+          <Alert
+            onClose={handleSnackbarClose}
+            severity="info"
+            variant="filled"
+            color="primary"
+            sx={{ width: '100%' }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+      </Router>
+    </CssBaseline>
+  )
+}
+
 
 export default function App() {
   return (
     <SearchResultsProvider>
       <ThemeProvider theme={greenTheme}>
-        <CssBaseline>
-          <Router>
-            <NavigationBar />
-            <Routes>
-              <Route index element={<SearchPage />} />
-              <Route path="/my-music" element={<MyMusicPage />} />
-              <Route path="/discover" element={<DiscoverPage />} />
-            </Routes>
-            <Player
-              sx={{
-                borderRadius: '15px',
-                ml: {xs: 2, md: 4},
-                mr: {xs: 2, md: 4},
-                padding: 0.5,
-              }}
-            />
-          </Router>
-        </CssBaseline>
+        <AppContent />
       </ThemeProvider>
     </SearchResultsProvider>
   );

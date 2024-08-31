@@ -16,6 +16,25 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
 
 
+@app.route('/api/find_music_directories', methods=['GET'])
+def find_music_directories(base_dir='/media', fallback_dir='~/downloads'):
+    fallback_dir = os.path.expanduser(fallback_dir)
+    music_dirs = []
+    
+    # Get all the directories inside /media
+    devices = [os.path.join(base_dir, d) for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
+    for device in devices:
+        for root, dirs, files in os.walk(device):
+            for dir_name in dirs:
+                if dir_name.lower().endswith('music'):
+                    music_dirs.append(os.path.join(root, dir_name))
+                    found_music_dir = True
+
+    music_dirs.append(fallback_dir)
+    
+    return music_dirs
+
+
 @app.route('/api/media/<path:filename>')
 def serve_audio(filename):
     try:

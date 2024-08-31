@@ -16,7 +16,7 @@ const greenTheme = createTheme({
     primary: {
       main: '#81FFD9',
       light: '#9DDE8B',
-      dark: '#006769',
+      dark: '#81FFD9',
       contrastText: '#FFFFFF',
     },
   },

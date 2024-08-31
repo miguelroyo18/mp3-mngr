@@ -213,6 +213,9 @@ export default function SearchView({
                   <IconButton
                     sx={{ color: 'primary.main' }}
                     aria-label="add"
+                    onClick={(e) => {
+                    e.stopPropagation();
+                  }}
                   >
                     <AddRoundedIcon sx={{ fontSize: '1.5rem' }} />
                   </IconButton>
